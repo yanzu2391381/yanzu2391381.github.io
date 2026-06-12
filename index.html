@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>证书报告查询</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: "Microsoft Yahei", 微软雅黑, sans-serif;
+            background-color: #f2f5f8;
+        }
+        /* 顶部浅蓝色条 和官网一致 */
+        .top-bar {
+            width: 100%;
+            height: 48px;
+            background-color: #2989d8;
+        }
+        /* 主容器卡片 */
+        .check-wrap {
+            width: 90%;
+            max-width: 520px;
+            margin: 60px auto 0;
+            background: #ffffff;
+            padding: 35px 30px;
+            border-radius: 4px;
+            box-shadow: 0 0 12px rgba(0,0,0,0.06);
+        }
+        .title {
+            font-size: 20px;
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+        }
+        /* 输入行布局 */
+        .input-row {
+            display: flex;
+            gap: 12px;
+        }
+        .input-row input {
+            flex: 1;
+            height: 42px;
+            line-height: 42px;
+            padding: 0 14px;
+            border: 1px solid #dcdcdc;
+            border-radius: 3px;
+            font-size: 15px;
+            outline: none;
+        }
+        .input-row input:focus {
+            border-color: #2989d8;
+        }
+        .input-row button {
+            width: 100px;
+            height: 42px;
+            border: none;
+            background-color: #2989d8;
+            color: #fff;
+            font-size: 15px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .input-row button:hover {
+            background-color: #237ac2;
+        }
+        /* 查询结果区域 */
+        .result-box {
+            margin-top: 25px;
+            padding: 18px;
+            border-radius: 3px;
+            font-size: 15px;
+            line-height: 1.7;
+            display: none;
+        }
+        /* 成功样式（报告存在） */
+        .success {
+            background-color: #f0f7ff;
+            border: 1px solid #cce0f5;
+            color: #1967b3;
+        }
+        /* 失败样式 */
+        .error {
+            background-color: #fef0f0;
+            border: 1px solid #fbc4c4;
+            color: #d83939;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部蓝色条（官方原版样式） -->
+    <div class="top-bar"></div>
+
+    <div class="check-wrap">
+        <div class="title">证书报告真伪查询</div>
+
+        <div class="input-row">
+            <input type="text" id="qNum" placeholder="请输入证书报告编号">
+            <button onclick="checkCert()">查询</button>
+        </div>
+
+        <div id="result" class="result-box"></div>
+    </div>
+
+    <script>
+        // 你指定的真实有效编号
+        const okCode = "J252425023802BR";
+
+        function checkCert(){
+            let val = document.getElementById("qNum").value.trim();
+            let resDom = document.getElementById("result");
+
+            if(!val){
+                resDom.className = "result-box error";
+                resDom.innerText = "请输入证书报告编号";
+                resDom.style.display = "block";
+                return;
+            }
+
+            // 匹配成功 = 报告存在
+            if(val === okCode){
+                resDom.className = "result-box success";
+                resDom.innerText = "查询成功：该证书报告真实存在，信息有效。";
+            }else{
+                resDom.className = "result-box error";
+                resDom.innerText = "未查询到对应证书报告信息，请核对编号是否正确。";
+            }
+            resDom.style.display = "block";
+        }
+    </script>
+</body>
+</html>
