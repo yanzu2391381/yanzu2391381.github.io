@@ -2,19 +2,20 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>检测报告在线查验</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
         body {
             font-family: system-ui, "Microsoft Yahei", sans-serif;
             background: #fff;
         }
-        /* 横幅背景容器 */
+        /* 最外层大背景容器 */
         .banner-wrap {
             width: 100%;
             height: 450px;
@@ -27,22 +28,35 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 60px;
         }
-        /* 黑色半透明遮罩 */
+        /* 轻微压暗整张原图 */
         .banner-wrap::before {
             content: "";
             position: absolute;
             inset: 0;
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.15);
             z-index: 1;
         }
-        /* 内容层级高于遮罩 */
-        .banner-wrap > * {
-            position: relative;
+        /* 蓝色雾层：只显示下方2/3，上方1/3透明 */
+        .blue-overlay {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 66.66%; /* 2/3高度 */
+            background: rgba(30, 70, 150, 0.38);
             z-index: 2;
         }
-        /* 标题字号缩小 */
+        /* 文字、输入框、按钮层级高于蓝色蒙版 */
+        .banner-content {
+            position: relative;
+            z-index: 3;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 60px;
+        }
         .banner-title {
             font-size: 36px;
             color: #ffffff;
@@ -65,8 +79,8 @@
             font-size: 44px;
             color: white;
             cursor: pointer;
+            pointer-events: auto;
         }
-        /* 查询结果区域 */
         .result-area {
             padding: 60px 20px;
             text-align: center;
@@ -86,9 +100,14 @@
 </head>
 <body>
     <div class="banner-wrap">
-        <div class="banner-title">检测报告在线查验</div>
-        <input type="text" id="inputCode" placeholder="输入报告编号">
-        <button id="queryBtn">查询</button>
+        <!-- 仅底部2/3的蓝色雾层 -->
+        <div class="blue-overlay"></div>
+        <!-- 所有内容 -->
+        <div class="banner-content">
+            <div class="banner-title">检测报告在线查验</div>
+            <input type="text" id="inputCode" placeholder="输入报告编号">
+            <button id="queryBtn">查询</button>
+        </div>
     </div>
 
     <div class="result-area">
@@ -98,7 +117,6 @@
     <div class="copyright">证书查询 版权所有</div>
 
     <script>
-        // 全部有效报告编号
         const validCodes = [
             "J2513142258202BR",
             "J2513142258203BR",
@@ -114,6 +132,7 @@
             "J252425023706BR",
             "J252425023707BR",
             "J252425023708BR",
+            "J252425023709BR",
             "J252425023802BR",
             "J252425023803BR",
             "J252425023804BR",
@@ -121,8 +140,7 @@
             "J252425023806BR",
             "J252425023807BR",
             "J252425023808BR",
-            "J252425023809BR",
-            "J252425023709BR"
+            "J252425023809BR"
         ];
 
         const btn = document.getElementById('queryBtn');
@@ -141,9 +159,14 @@
                 resultDom.innerText = "未查询到该编号对应的检测报告";
             }
         }
-        // 点击按钮查询
+
+        function handleTap(e) {
+            e.preventDefault();
+            checkCode();
+        }
         btn.addEventListener('click', checkCode);
-        // 按下回车键快速查询
+        btn.addEventListener('touchend', handleTap);
+
         input.addEventListener('keydown', function(e) {
             if(e.key === 'Enter') checkCode();
         })
