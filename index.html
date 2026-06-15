@@ -14,28 +14,10 @@
             font-family: system-ui, "Microsoft Yahei", sans-serif;
             background: #fff;
         }
-        /* 模拟浏览器顶部地址栏区域 */
-        .browser-top {
-            height: 120px;
-            background: #f3f3f3;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: #333;
-            position: relative;
-        }
-        .browser-top .close {
-            position: absolute;
-            left: 20px;
-            font-size: 32px;
-            font-weight: lighter;
-        }
-        /* 横幅背景容器 */
+        /* 横幅背景容器 - 调高高度，放大背景展示区域 */
         .banner-wrap {
             width: 100%;
-            height: 320px;
-            /* 图片已改为 bg.png */
+            height: 450px;
             background-image: url("bg.png");
             background-size: cover;
             background-position: center;
@@ -60,8 +42,9 @@
             position: relative;
             z-index: 2;
         }
+        /* 标题字号缩小 */
         .banner-title {
-            font-size: 48px;
+            font-size: 36px;
             color: #ffffff;
             letter-spacing: 8px;
         }
@@ -101,11 +84,7 @@
     </style>
 </head>
 <body>
-    <div class="browser-top">
-        <span class="close">×</span>
-        report.jla-iab.com
-    </div>
-
+    <!-- 已移除顶部browser-top模块 -->
     <div class="banner-wrap">
         <div class="banner-title">检测报告在线查验</div>
         <input type="text" id="inputCode" placeholder="输入报告编号" value="J2513142258202BR">
